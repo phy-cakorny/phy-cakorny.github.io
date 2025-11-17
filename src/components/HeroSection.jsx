@@ -14,14 +14,16 @@ export const HeroSection = () => {
                             {" "}
                             Paige 
                         </span>
-                        <span className="text-gradient ml-2 opacity-0 animate-fade-in-delay-2"> 
-                            {" "}
-                            Yun
-                        </span>
                     </h1>
 
-                    <p className="text-lg md:text-xl text-muted-foreground max-2-2xl mx-auto opacity-0 animate-fade-in-delay-3">
-                        ADD BIO HERE
+                    <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto opacity-0 animate-fade-in-delay-3">
+                        <span>
+                            Electrical and Computer Engineering & Computer Science
+                        </span>
+
+                        <span className="block text-primary text-xl md:text-2xl">
+                            @ Cornell University
+                        </span>
                     </p>
 
                     <div className="opacity-0 animate-fade-in-delay-4 pt-4">

@@ -3,8 +3,24 @@ import { useEffect, useState } from "react";
 export const StarBackground = () => {
     const [stars, setStars] = useState([])
     const [meteors, setMeteors] = useState([])
+    const [isDarkMode, setIsDarkMode] = useState(false)
 
     useEffect(() => {
+        const storedTheme = localStorage.getItem("theme")
+        setIsDarkMode(storedTheme === "dark")
+
+        const handleStorageChange = () => {
+            const theme = localStorage.getItem("theme")
+            setIsDarkMode(theme === "dark")
+        }
+
+        window.addEventListener("storage", handleStorageChange)
+
+        const observer = new MutationObserver(() => {
+            setIsDarkMode(document.documentElement.classList.contains("dark"))
+        })
+        observer.observe(document.documentElement, { attributes: true })
+
         generateStars(); 
         generateMeteors();
 
@@ -16,6 +32,8 @@ export const StarBackground = () => {
 
         return () => {
             window.removeEventListener("resize", handleResize);
+            window.removeEventListener("storage", handleStorageChange);
+            observer.disconnect();
         }
     }, []);
 
@@ -56,6 +74,10 @@ export const StarBackground = () => {
         }
 
         setMeteors(newMeteors);
+    }
+
+    if (!isDarkMode) {
+        return null;
     }
 
     return (
