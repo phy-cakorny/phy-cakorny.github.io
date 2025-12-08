@@ -94,7 +94,7 @@ export const AboutSection = () => {
                         <FlipCard
                             icon={Briefcase}
                             title="Technical Project Leadership"
-                            description="Leading subteams, managing timelines, and delivering iterative milestones using agile methods."
+                            description="Leading subteams, managing timelines, and delivering iterative milestones using Agile methods."
                         />
                     </div>
                 </div>

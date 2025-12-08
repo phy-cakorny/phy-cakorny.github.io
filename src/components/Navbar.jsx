@@ -6,7 +6,7 @@ import { ThemeToggle } from "./ThemeToggle";
 const navItems = [
   { name: "Home", href: "#hero" },
   { name: "About", href: "#about" },
-  { name: "Skills", href: "#skills" },
+  // { name: "Skills", href: "#skills" },
   { name: "Projects", href: "#projects" },
   // { name: "Contact", href: "#contact" },
 ];
@@ -14,13 +14,36 @@ const navItems = [
 export const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState("hero");
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.screenY > 10);
+      setIsScrolled(window.scrollY > 10);
+      
+      // Determine which section is currently in view
+      const sections = ["hero", "about", "projects"];
+      const scrollPosition = window.scrollY + 200; // Offset for navbar and padding
+      
+      let currentSection = "hero";
+      
+      // Check sections from bottom to top to find the one we're currently in
+      for (let i = sections.length - 1; i >= 0; i--) {
+        const section = document.getElementById(sections[i]);
+        if (section) {
+          const sectionTop = section.offsetTop;
+          if (scrollPosition >= sectionTop) {
+            currentSection = sections[i];
+            break;
+          }
+        }
+      }
+      
+      setActiveSection(currentSection);
     };
 
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll(); // Check on mount
+    
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
   return (
@@ -43,20 +66,31 @@ export const Navbar = () => {
 
         {/* desktop nav */}
         <div className="hidden md:flex items-center space-x-8">
-          {navItems.map((item, key) => (
-            <a
-              key={key}
-              href={item.href}
-              className="text-foreground/80 hover:text-primary transition-colors duration-300"
-            >
-              {item.name}
-            </a>
-          ))}
+          {navItems.map((item, key) => {
+            const sectionId = item.href.replace("#", "");
+            const isActive = activeSection === sectionId;
+            return (
+              <a
+                key={key}
+                href={item.href}
+                className={cn(
+                  "transition-colors duration-300 relative",
+                  isActive
+                    ? "text-primary font-semibold"
+                    : "text-foreground/80 hover:text-primary"
+                )}
+              >
+                {item.name}
+                {isActive && (
+                  <span className="absolute -bottom-1 left-0 right-0 h-0.5 bg-primary rounded-full" />
+                )}
+              </a>
+            );
+          })}
           <ThemeToggle />
         </div>
 
         {/* mobile nav */}
-
         <button
           onClick={() => setIsMenuOpen((prev) => !prev)}
           className="md:hidden p-2 text-foreground z-50"
@@ -75,16 +109,28 @@ export const Navbar = () => {
           )}
         >
           <div className="flex flex-col space-y-8 text-xl">
-            {navItems.map((item, key) => (
-              <a
-                key={key}
-                href={item.href}
-                className="text-foreground/80 hover:text-primary transition-colors duration-300"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                {item.name}
-              </a>
-            ))}
+            {navItems.map((item, key) => {
+              const sectionId = item.href.replace("#", "");
+              const isActive = activeSection === sectionId;
+              return (
+                <a
+                  key={key}
+                  href={item.href}
+                  className={cn(
+                    "transition-colors duration-300 relative",
+                    isActive
+                      ? "text-primary font-semibold"
+                      : "text-foreground/80 hover:text-primary"
+                  )}
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  {item.name}
+                  {isActive && (
+                    <span className="absolute -bottom-2 left-0 right-0 h-0.5 bg-primary rounded-full" />
+                  )}
+                </a>
+              );
+            })}
           </div>
         </div>
       </div>

@@ -1,5 +1,5 @@
 import '@google/model-viewer';
-import GithubProjects from "../components/GithubProjects";
+import EnhancedProjects from "../components/EnhancedProjects";
 
 export const ProjectsSection = () => {
     return (
@@ -9,18 +9,7 @@ export const ProjectsSection = () => {
                     My <span className="text-primary">Projects</span>
                 </h2>
 
-                <div className="project-model">
-                    <model-viewer
-                        src="/robot2023.glb"
-                        // src="https://modelviewer.dev/shared-assets/models/Astronaut.glb"
-                        alt="2023 Competition Robot"
-                        auto-rotate
-                        camera-controls
-                        style={{ width: '100%', height: '500px' }}
-                    ></model-viewer>
-                </div>
-
-                <GithubProjects username="phy-cakorny" max={6} />
+                <EnhancedProjects username="phy-cakorny" max={6} />
             </div>
         </section>
     );

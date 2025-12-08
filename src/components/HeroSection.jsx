@@ -14,7 +14,7 @@ export const HeroSection = () => {
                         <span className="opacity-0 animate-fade-in"> Hi, I'm </span>
                         <span className="text-primary opacity-0 animate-fade-in-delay-1"> 
                             {" "}
-                            Paige 
+                            Paige!
                         </span>
                     </h1>
 
@@ -36,12 +36,16 @@ export const HeroSection = () => {
                 </div>
             </div>
 
-            <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex flex-col items-center animate-bounce">
+            <a 
+                href="#about" 
+                className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex flex-col items-center animate-bounce cursor-pointer hover:scale-110 transition-transform duration-300"
+                aria-label="Scroll to about section"
+            >
                 {/* <span className="text-sm text-muted-foreground mb-2">
                     Scroll
                 </span> */}
                 <ArrowDown className="h-5 w-5 text-primary animate-pulse-subtle" />
-            </div>
+            </a>
             <Particles
                 className="absolute inset-0 -z-10"
                 quantity={Math.floor(window.innerWidth / 5)}
