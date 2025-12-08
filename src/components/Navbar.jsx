@@ -17,13 +17,30 @@ export const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("hero");
 
+  // Handle smooth scrolling with offset for navbar
+  const handleNavClick = (e, href) => {
+    e.preventDefault();
+    if (href && href.startsWith("#")) {
+      const targetId = href.substring(1);
+      const targetElement = document.getElementById(targetId);
+      if (targetElement) {
+        const navbarHeight = 100; // Account for fixed navbar height
+        const targetPosition = targetElement.offsetTop - navbarHeight;
+        window.scrollTo({
+          top: targetPosition,
+          behavior: "smooth",
+        });
+      }
+    }
+  };
+
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 10);
       
       // Determine which section is currently in view
       const sections = ["hero", "about", "projects", "hobbies"];
-      const scrollPosition = window.scrollY + 200; // Offset for navbar and padding
+      const scrollPosition = window.scrollY + 120; // Offset for navbar and padding
       
       let currentSection = "hero";
       
@@ -58,6 +75,7 @@ export const Navbar = () => {
         <a
           className="text-xl font-bold text-primary flex items-center"
           href="#hero"
+          onClick={(e) => handleNavClick(e, "#hero")}
         >
           <span className="relative z-10">
             <span className="text-glow text-foreground"> Paige </span>{" "}
@@ -74,6 +92,7 @@ export const Navbar = () => {
               <a
                 key={key}
                 href={item.href}
+                onClick={(e) => handleNavClick(e, item.href)}
                 className={cn(
                   "transition-colors duration-300 relative",
                   isActive
@@ -117,13 +136,16 @@ export const Navbar = () => {
                 <a
                   key={key}
                   href={item.href}
+                  onClick={(e) => {
+                    handleNavClick(e, item.href);
+                    setIsMenuOpen(false);
+                  }}
                   className={cn(
                     "transition-colors duration-300 relative",
                     isActive
                       ? "text-primary font-semibold"
                       : "text-foreground/80 hover:text-primary"
                   )}
-                  onClick={() => setIsMenuOpen(false)}
                 >
                   {item.name}
                   {isActive && (
