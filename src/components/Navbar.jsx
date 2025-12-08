@@ -40,18 +40,48 @@ export const Navbar = () => {
       
       // Determine which section is currently in view
       const sections = ["hero", "about", "projects", "hobbies"];
-      const scrollPosition = window.scrollY + 120; // Offset for navbar and padding
+      const scrollPosition = window.scrollY + 150; // Offset for navbar and padding
       
       let currentSection = "hero";
       
-      // Check sections from bottom to top to find the one we're currently in
-      for (let i = sections.length - 1; i >= 0; i--) {
-        const section = document.getElementById(sections[i]);
-        if (section) {
-          const sectionTop = section.offsetTop;
-          if (scrollPosition >= sectionTop) {
-            currentSection = sections[i];
-            break;
+      // Check if we're near the bottom of the page
+      const windowHeight = window.innerHeight;
+      const documentHeight = document.documentElement.scrollHeight;
+      const isNearBottom = window.scrollY + windowHeight >= documentHeight - 300;
+      
+      // First, check hobbies section specifically (it's the last section)
+      const hobbiesSection = document.getElementById("hobbies");
+      if (hobbiesSection) {
+        const hobbiesTop = hobbiesSection.offsetTop;
+        
+        // If we're past hobbies top OR near bottom, set to hobbies
+        if (scrollPosition >= hobbiesTop || isNearBottom) {
+          currentSection = "hobbies";
+        } else {
+          // Check other sections from bottom to top (excluding hobbies)
+          for (let i = sections.length - 2; i >= 0; i--) {
+            const section = document.getElementById(sections[i]);
+            if (section) {
+              const sectionTop = section.offsetTop;
+              
+              // If we're past this section's top but haven't reached hobbies yet
+              if (scrollPosition >= sectionTop && scrollPosition < hobbiesTop) {
+                currentSection = sections[i];
+                break;
+              }
+            }
+          }
+        }
+      } else {
+        // Fallback: check sections from bottom to top
+        for (let i = sections.length - 1; i >= 0; i--) {
+          const section = document.getElementById(sections[i]);
+          if (section) {
+            const sectionTop = section.offsetTop;
+            if (scrollPosition >= sectionTop) {
+              currentSection = sections[i];
+              break;
+            }
           }
         }
       }
