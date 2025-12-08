@@ -67,12 +67,7 @@ export const AboutSection = () => {
                             <MapPin /> California • New York
                         </p>
 
-                        <div className="flex flex-col sm:flex-row gap-4 pt-4 justify-center md:justify-center">
-                            {/* <a href="#contact" className="cosmic-button">
-                                {" "}
-                                Get in touch!
-                            </a> */}
-
+                        <div className="flex flex-col sm:flex-row gap-3 pt-4 justify-center md:justify-center">
                             <a href="/resume.pdf" target="_blank" rel="noopener noreferrer" className="px-6 py-2 rounded-full border border-primary text-primary hover:bg-primary/20 transition-colors duration-300">
                                 {" "}
                                 View Resume

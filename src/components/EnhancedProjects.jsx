@@ -33,7 +33,7 @@ const PopoutProjectCard = ({
       {/* Base Card */}
       <div
         onClick={() => setOpen(true)}
-        className="bg-card rounded-xl p-6 shadow-sm cursor-pointer hover:shadow-md transition 
+        className="bg-card rounded-xl p-6 shadow-sm cursor-pointer transition card-hover
                   flex items-center gap-4"
       >
         {/* Logo */}
@@ -47,9 +47,9 @@ const PopoutProjectCard = ({
 
         {/* Text */}
         <div className="flex flex-col flex-1 min-w-0">
-          <h3 className="text-xl font-bold">{company}</h3>
+          <h3 className="text-xl font-bold">{role}</h3>
           <p className="text-foreground/70 text-sm">
-            {role} | {start} - {end || "Present"} | {location}
+            {company} | {start} - {end || "Present"} | {location}
           </p>
           <p className="text-foreground/60 mt-2 line-clamp-2">{description}</p>
         </div>
@@ -104,9 +104,9 @@ const PopoutProjectCard = ({
 
                 {/* Text */}
                 <div className="flex flex-col flex-1 min-w-0">
-                  <h1 className="text-xl md:text-2xl font-bold">{company}</h1>
+                  <h1 className="text-xl md:text-2xl font-bold">{role}</h1>
                   <p className="text-foreground/70 text-base md:text-md">
-                    {role} | {start} - {end || "Present"} | {location}
+                    {company} | {start} - {end || "Present"} | {location}
                   </p>
                   <p className="text-foreground/60 mt-2 line-clamp-2 text-base md:text-md">{description}</p>
                 </div>
@@ -125,16 +125,38 @@ const PopoutProjectCard = ({
   );
 };
 
+function parseDate(dateStr) {
+  if (!dateStr || dateStr.toLowerCase() === "present") {
+    // Treat "Present" as infinitely recent
+    return new Date(3000, 0, 1);
+  }
+  return new Date(dateStr);
+}
+
 export default function EnhancedProjects({ 
   activeTab: initialActiveTab,
 }) {
   const [activeCategory, setActiveCategory] = useState(initialActiveTab || "all");
   
   // Filter projects by category
-  const filteredProjects = Object.entries(projects).filter(([key, project]) => {
-    if (activeCategory === "all") return true;
-    return project.category === activeCategory;
-  });
+  const filteredProjects = Object.entries(projects)
+    .filter(([key, project]) => {
+      if (activeCategory === "all") return true;
+      return project.category === activeCategory;
+    })
+    .sort(([keyA, a], [keyB, b]) => {
+      const endA = parseDate(a.end);
+      const endB = parseDate(b.end);
+
+      if (endA.getTime() === endB.getTime()) {
+        const startA = parseDate(a.start);
+        const startB = parseDate(b.start);
+        // Most recently started first
+        return startB - startA;
+      }
+      return endB - endA; 
+    })
+    ;
   
   if (filteredProjects.length === 0) {
     return <div className="text-center py-12">No projects found in this category.</div>;

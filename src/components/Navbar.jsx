@@ -8,6 +8,7 @@ const navItems = [
   { name: "About", href: "#about" },
   // { name: "Skills", href: "#skills" },
   { name: "Projects", href: "#projects" },
+  { name: "Hobbies", href: "#hobbies" },
   // { name: "Contact", href: "#contact" },
 ];
 
@@ -21,7 +22,7 @@ export const Navbar = () => {
       setIsScrolled(window.scrollY > 10);
       
       // Determine which section is currently in view
-      const sections = ["hero", "about", "projects"];
+      const sections = ["hero", "about", "projects", "hobbies"];
       const scrollPosition = window.scrollY + 200; // Offset for navbar and padding
       
       let currentSection = "hero";
