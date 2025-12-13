@@ -17,71 +17,24 @@ export const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("hero");
 
-  // Handle smooth scrolling with offset for navbar
-  const handleNavClick = (e, href) => {
-    e.preventDefault();
-    if (href && href.startsWith("#")) {
-      const targetId = href.substring(1);
-      const targetElement = document.getElementById(targetId);
-      if (targetElement) {
-        const navbarHeight = 100; // Account for fixed navbar height
-        const targetPosition = targetElement.offsetTop - navbarHeight;
-        window.scrollTo({
-          top: targetPosition,
-          behavior: "smooth",
-        });
-      }
-    }
-  };
-
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 10);
       
       // Determine which section is currently in view
       const sections = ["hero", "about", "projects", "hobbies"];
-      const scrollPosition = window.scrollY + 150; // Offset for navbar and padding
+      const scrollPosition = window.scrollY + 200; // Offset for navbar and padding
       
       let currentSection = "hero";
       
-      // Check if we're near the bottom of the page
-      const windowHeight = window.innerHeight;
-      const documentHeight = document.documentElement.scrollHeight;
-      const isNearBottom = window.scrollY + windowHeight >= documentHeight - 300;
-      
-      // First, check hobbies section specifically (it's the last section)
-      const hobbiesSection = document.getElementById("hobbies");
-      if (hobbiesSection) {
-        const hobbiesTop = hobbiesSection.offsetTop;
-        
-        // If we're past hobbies top OR near bottom, set to hobbies
-        if (scrollPosition >= hobbiesTop || isNearBottom) {
-          currentSection = "hobbies";
-        } else {
-          // Check other sections from bottom to top (excluding hobbies)
-          for (let i = sections.length - 2; i >= 0; i--) {
-            const section = document.getElementById(sections[i]);
-            if (section) {
-              const sectionTop = section.offsetTop;
-              
-              // If we're past this section's top but haven't reached hobbies yet
-              if (scrollPosition >= sectionTop && scrollPosition < hobbiesTop) {
-                currentSection = sections[i];
-                break;
-              }
-            }
-          }
-        }
-      } else {
-        // Fallback: check sections from bottom to top
-        for (let i = sections.length - 1; i >= 0; i--) {
-          const section = document.getElementById(sections[i]);
-          if (section) {
-            const sectionTop = section.offsetTop;
-            if (scrollPosition >= sectionTop) {
-              currentSection = sections[i];
-              break;
-            }
+      // Check sections from bottom to top to find the one we're currently in
+      for (let i = sections.length - 1; i >= 0; i--) {
+        const section = document.getElementById(sections[i]);
+        if (section) {
+          const sectionTop = section.offsetTop;
+          if (scrollPosition >= sectionTop) {
+            currentSection = sections[i];
+            break;
           }
         }
       }
@@ -105,7 +58,6 @@ export const Navbar = () => {
         <a
           className="text-xl font-bold text-primary flex items-center"
           href="#hero"
-          onClick={(e) => handleNavClick(e, "#hero")}
         >
           <span className="relative z-10">
             <span className="text-glow text-foreground"> Paige </span>{" "}
@@ -122,7 +74,6 @@ export const Navbar = () => {
               <a
                 key={key}
                 href={item.href}
-                onClick={(e) => handleNavClick(e, item.href)}
                 className={cn(
                   "transition-colors duration-300 relative",
                   isActive
@@ -166,16 +117,13 @@ export const Navbar = () => {
                 <a
                   key={key}
                   href={item.href}
-                  onClick={(e) => {
-                    handleNavClick(e, item.href);
-                    setIsMenuOpen(false);
-                  }}
                   className={cn(
                     "transition-colors duration-300 relative",
                     isActive
                       ? "text-primary font-semibold"
                       : "text-foreground/80 hover:text-primary"
                   )}
+                  onClick={() => setIsMenuOpen(false)}
                 >
                   {item.name}
                   {isActive && (

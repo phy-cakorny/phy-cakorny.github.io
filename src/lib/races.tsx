@@ -4,6 +4,7 @@ interface Races {
     title: string;
     year: string;
     stravaLink?: string;
+    quote?: string;
 }
 
 const races: Races[] = [
@@ -11,7 +12,8 @@ const races: Races[] = [
         image: ["/running/sf25.png"],
         title: "San Francisco Half Marathon",
         year: "July 2025",
-        stravaLink: "https://strava.app.link/NqMLj0qbWYb"
+        stravaLink: "https://strava.app.link/NqMLj0qbWYb",
+        quote: "This was my first "
     },
     {
         image: ["/running/turkey.jpeg"],
@@ -37,12 +39,25 @@ const races: Races[] = [
         year: "2019-2023",
     },
 ].sort((a, b) => {
-    // Extract year from strings like "July 2025" or "2019-2023"
-    const getYear = (yearStr: string) => {
-        const match = yearStr.match(/\d{4}/);
-        return match ? parseInt(match[0]) : 0;
+    // Extract year and month from strings like "July 2025" or "2019-2023"
+    const getDateValue = (yearStr: string) => {
+        // Handle date ranges like "2019-2023" - use the first year
+        if (yearStr.indexOf('-') !== -1) {
+            const match = yearStr.match(/\d{4}/);
+            return match ? parseInt(match[0]) * 12 : 0;
+        }
+        
+        // Handle month + year like "July 2025"
+        const monthNames = ["january", "february", "march", "april", "may", "june", 
+                           "july", "august", "september", "october", "november", "december"];
+        const parts = yearStr.toLowerCase().split(' ');
+        const month = parts[0];
+        const yearMatch = yearStr.match(/\d{4}/);
+        const year = yearMatch ? parseInt(yearMatch[0]) : 0;
+        const monthIndex = monthNames.indexOf(month);
+        return year * 12 + (monthIndex >= 0 ? monthIndex : 0);
     };
-    return getYear(b.year) - getYear(a.year);
+    return getDateValue(a.year) - getDateValue(b.year);
 });
 
 export default races;

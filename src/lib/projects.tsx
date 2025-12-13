@@ -16,16 +16,31 @@ interface ProjectDetails {
     date: string;
     details: string[];
 }
-  
+
+// Blog-style content sections
+interface ContentSection {
+    type: "text" | "heading" | "code" | "quote" | "list" | "divider";
+    content?: string; // For text, heading, quote
+    level?: number; // For heading (1-6)
+    items?: string[]; // For list
+    language?: string; // For code blocks
+    code?: string; // For code blocks
+}
+
 interface Media {
-  type: "image" | "video" | "model" | "file";
+  type: "image" | "video" | "model" | "file" | "slideshow";
   path?: string;
+  paths?: string[]; // For slideshow
   caption?: string;
   skills?: Skills[];
   preview?: string;
   externalLink?: string;
   githubLink?: string[];
   projectdetails?: ProjectDetails;
+  // Blog-style content
+  sections?: ContentSection[]; // Structured content sections
+  introduction?: string; // Brief intro paragraph
+  conclusion?: string; // Conclusion paragraph
 }
 
 interface Project {
@@ -38,6 +53,10 @@ interface Project {
     description: string;
     media: Media[];
     category: "hardware" | "software" | "research" | "teaching";
+    // Blog-style metadata
+    tags?: string[]; // For filtering/searching
+    readTime?: number; // Estimated reading time in minutes
+    featured?: boolean; // Highlight important projects
 }
 
 interface Projects {

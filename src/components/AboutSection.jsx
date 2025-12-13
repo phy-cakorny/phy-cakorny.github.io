@@ -1,4 +1,4 @@
-import { Code, Briefcase, MapPin, Cpu } from "lucide-react";
+import { Lightbulb, Layers, Users, MapPin } from "lucide-react";
 import { useEffect, useState } from "react";
 
 
@@ -7,7 +7,7 @@ const FlipCard = ({ icon: Icon, title, description }) => {
 
     return (
         <div
-            className="relative w-full h-40 cursor-pointer [perspective:1000px]"
+            className="relative w-7/8 h-40 cursor-pointer [perspective:1000px]"
             onClick={() => setIsFlipped(!isFlipped)}
         >
             <div
@@ -60,7 +60,7 @@ export const AboutSection = () => {
                         </h3>
 
                         <p className="text-muted-foreground mt-1 text-lg opacity-0 animate-fade-in-delay-1">
-                            BS in ECE & CS (May 2027)
+                            B.S. in ECE & CS (May 2027)
                         </p>
 
                         <p className="flex items-center gap-2 text-muted-foreground text-sm justify-center">
@@ -77,19 +77,19 @@ export const AboutSection = () => {
                 
                     <div className="grid grid-cols-1 gap-6">
                          <FlipCard
-                            icon={Code}
-                            title="Full Stack Engineering"
-                            description="Building full-stack systems integrating LLM pipelines, UI/UX prototypes, and scalable database backends."
+                            icon={Layers}
+                            title="Interdisciplinary"
+                            description="Using hardware, software, and design thinking to solve real-world problems from multiple angles."
                         />
                         <FlipCard
-                            icon={Cpu}
-                            title="Digital Logic & Embedded Systems"
-                            description="Designing synchronous digital circuits, verifying HDL, and deploying hardware implementations on FPGA."
+                            icon={Lightbulb}
+                            title="Innovative"
+                            description="Asking questions and pondering ideas to craft elegant, human-centered solution."
                         />
                         <FlipCard
-                            icon={Briefcase}
-                            title="Technical Project Leadership"
-                            description="Leading subteams, managing timelines, and delivering iterative milestones using Agile methods."
+                            icon={Users}
+                            title="Collaborative"
+                            description="Leveraging diverse perspectives to create something greater than what we can achieve alone."
                         />
                     </div>
                 </div>
